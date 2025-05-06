@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    command: start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./fhir-realm.json:/opt/keycloak/data/import/fhir-realm.json
+    ports:
+      - "7070:8080"
+    networks:
+      - hapi-network
+
+networks:
+  hapi-network:
+    driver: bridge

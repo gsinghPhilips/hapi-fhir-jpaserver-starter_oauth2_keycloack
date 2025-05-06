@@ -1,0 +1,57 @@
+{
+    "realm": "fhir-realm",
+    "enabled": true,
+    "roles": {
+      "realm": [
+        {
+          "name": "user",
+          "description": "Standard user role"
+        },
+        {
+          "name": "admin",
+          "description": "Administrator role"
+        }
+      ]
+    },
+    "clients": [
+      {
+        "clientId": "fhir-client",
+        "enabled": true,
+        "protocol": "openid-connect",
+        "publicClient": false,
+        "secret": "secret",
+        "redirectUris": [
+          "http://host.docker.internal:8080/"
+        ],
+        "serviceAccountsEnabled": true,
+        "standardFlowEnabled": true,
+        "directAccessGrantsEnabled": true,
+        "authorizationServicesEnabled": true,
+        "rootUrl": "http://host.docker.internal:8080",
+        "baseUrl": "/fhir",
+        "name": "FHIR Client",
+        "attributes": {
+          "jwksUrl": "http://host.docker.internal:7070/realms/fhir-realm/protocol/openid-connect/certs",
+            "sso.session.idle.timeout": "0",
+            "sso.session.max.lifespan": "0"
+        }
+      }
+    ],
+    "users": [
+      {
+        "username": "testuser",
+        "enabled": true,
+        "emailVerified": true,
+        "credentials": [
+          {
+            "type": "password",
+            "value": "password",
+            "temporary": false
+          }
+        ],
+        "realmRoles": [
+          "user"
+        ]
+      }
+    ]
+  }
