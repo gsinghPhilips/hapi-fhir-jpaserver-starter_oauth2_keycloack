@@ -1,6 +1,6 @@
 services:
   hapi-fhir-jpaserver-start:
-    build: .
+    image: hapiproject/hapi:latest
     container_name: hapi-fhir-jpaserver-start
     restart: on-failure
     environment:
@@ -13,7 +13,8 @@ services:
       - "8080:8080"
     networks:
       - hapi-network
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  
   hapi-fhir-postgres:
     image: postgres:15-alpine
     container_name: hapi-fhir-postgres
@@ -47,12 +48,13 @@ services:
       - OAUTH2_PROXY_EMAIL_CLAIM=email
       - OAUTH2_PROXY_OIDC_JWKS_URL=http://host.docker.internal:7070/realms/fhir-realm/protocol/openid-connect/certs
       - OAUTH2_PROXY_SKIP_OIDC_DISCOVERY=false
-      - OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS=true
+      - OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS=false
       - OAUTH2_PROXY_REDIRECT_URL=http://host.docker.internal:8080/
       - OAUTH2_PROXY_COOKIE_REFRESH=0s
       - OAUTH2_PROXY_COOKIE_EXPIRE=0s
     networks:
       - hapi-network
+
 
 volumes:
   hapi-fhir-postgres:
